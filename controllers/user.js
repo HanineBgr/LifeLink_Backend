@@ -21,7 +21,6 @@ export async function PatientRegister(req, res, next) {
         if (existingUser) {
             return res.status(400).json({ message: "It seems that you already have an account" });
         }
-        // Create a new patient object
         const patient = new Patient({
             email: req.body.email,
             firstName: req.body.firstName,
@@ -31,7 +30,6 @@ export async function PatientRegister(req, res, next) {
             role: "Patient",
         });
 
-        // Save the patient to MongoDB
         let savedPatient;
         try {
             savedPatient = await patient.save();
@@ -46,11 +44,10 @@ export async function PatientRegister(req, res, next) {
                 password: req.body.password
             });
             await admin.auth().setCustomUserClaims(userRecord.uid, {
-                role: 'patient' // Set the user's role 
+                role: 'patient' 
             });
         } catch (error) {
             console.log('Error creating user in Firebase:', error);
-            // If Firebase registration fails, delete the patient record from MongoDB
             try {
                 await savedPatient.delete();
             } catch (deleteError) {
@@ -59,11 +56,9 @@ export async function PatientRegister(req, res, next) {
             return res.status(500).send(error);
         }
 
-        // Update the patient document with the UID from Firebase
         savedPatient.UID = userRecord.uid;
         await savedPatient.save();
 
-        // Send success response
         res.status(200).json(savedPatient);
     } catch (error) {
         console.log('Error in PatientRegister:', error);
