@@ -1,5 +1,5 @@
 import express from 'express';
-import { createPatient, patientSignIn, getPatientProfile, updatePatientProfile,getPatients, deletePatient } from '../controllers/patient.js';
+import { createPatient, patientSignIn, getPatientProfile, updatePatientProfile, deletePatient } from '../controllers/patient.js';
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ router.post('/signin', patientSignIn);
 
 router.get('/profile/:id', getPatientProfile);
 
-router.get('/patients', getPatients);
+//router.get('/patients', getPatients);
 
 router.put('/updateProfile/:id',updatePatientProfile);
 

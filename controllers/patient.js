@@ -3,13 +3,15 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 // Create a new patient
-export const createPatient = async (req, res) => {
+export const createPatient = async (req, res, next) => {
   const { name, email, password, phone, address, dateOfBirth, gender, medicalHistory, emergencyContact } = req.body;
 
   try {
     const existingPatient = await Patient.findOne({ email });
     if (existingPatient) {
-      return res.status(400).json({ message: 'Patient already exists' });
+      const error = new Error('Patient already exists');
+      error.status = 400;
+      throw error; // Throwing error to be caught by middleware
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,23 +38,27 @@ export const createPatient = async (req, res) => {
       patientId: newPatient._id
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating patient', error: error.message });
+    next(error); // Passing error to the error handler middleware
   }
 };
 
 // Sign In Route for Patients
-export const patientSignIn = async (req, res) => {
+export const patientSignIn = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
     const patient = await Patient.findOne({ email });
     if (!patient) {
-      return res.status(400).json({ message: 'Patient not found' });
+      const error = new Error('Patient not found');
+      error.status = 400;
+      throw error;
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, patient.password);
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: 'Invalid password' });
+      const error = new Error('Invalid password');
+      error.status = 400;
+      throw error;
     }
 
     const token = jwt.sign({ patientId: patient._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
@@ -63,49 +69,39 @@ export const patientSignIn = async (req, res) => {
       patientId: patient._id
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error signing in patient', error: error.message });
-  }
-};
-
-// Get All Patients (New Endpoint)
-export const getPatients = async (req, res) => {
-  try {
-    const patients = await Patient.find(); // Fetch all patients from the database
-    if (!patients || patients.length === 0) {
-      return res.status(404).json({ message: 'No patients found' });
-    }
-
-    res.status(200).json(patients);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching patients', error: error.message });
+    next(error);
   }
 };
 
 // Get Patient Profile
-export const getPatientProfile = async (req, res) => {
+export const getPatientProfile = async (req, res, next) => {
   const { id } = req.params;
 
   try {
     const patient = await Patient.findById(id).populate('doctorAssigned appointments');
     if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
+      const error = new Error('Patient not found');
+      error.status = 404;
+      throw error;
     }
 
     res.status(200).json(patient);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching patient profile', error: error.message });
+    next(error);
   }
 };
 
 // Update Patient Profile
-export const updatePatientProfile = async (req, res) => {
+export const updatePatientProfile = async (req, res, next) => {
   const { id } = req.params;
   const { name, phone, address, dateOfBirth, gender, medicalHistory, emergencyContact } = req.body;
 
   try {
     const patient = await Patient.findById(id);
     if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
+      const error = new Error('Patient not found');
+      error.status = 404;
+      throw error;
     }
 
     patient.name = name || patient.name;
@@ -123,25 +119,26 @@ export const updatePatientProfile = async (req, res) => {
       patient
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error updating patient profile', error: error.message });
+    next(error);
   }
 };
 
 // Delete Patient
-export const deletePatient = async (req, res) => {
+export const deletePatient = async (req, res, next) => {
   const { id } = req.params;
 
   try {
     const patient = await Patient.findById(id);
     if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
+      const error = new Error('Patient not found');
+      error.status = 404;
+      throw error;
     }
 
     await patient.remove();
 
-    console.log("Status: 200 - Patient deleted successfully");
     res.status(200).json({ message: 'Patient deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting patient', error: error.message });
+    next(error);
   }
 };
