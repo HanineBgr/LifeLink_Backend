@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import doctorRoutes from './routes/doctor.js'; 
 import patientRoutes from './routes/patient.js'; 
+import articleRoutes from './routes/article.js'; 
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 app.use('/api/doctors', doctorRoutes); 
 app.use('/api/patients', patientRoutes); 
+app.use('/api/articles', articleRoutes); 
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
