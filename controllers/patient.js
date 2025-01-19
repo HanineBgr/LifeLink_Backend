@@ -11,7 +11,7 @@ export const createPatient = async (req, res, next) => {
     if (existingPatient) {
       const error = new Error('Patient already exists');
       error.status = 400;
-      throw error; // Throwing error to be caught by middleware
+      throw error; 
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,7 +38,7 @@ export const createPatient = async (req, res, next) => {
       patientId: newPatient._id
     });
   } catch (error) {
-    next(error); // Passing error to the error handler middleware
+    next(error); 
   }
 };
 

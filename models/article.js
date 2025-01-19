@@ -1,20 +1,23 @@
+// In article.js
 import mongoose from 'mongoose';
 
-const articleSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
-    author: { type: String, required: true },
-    category: {
-      type: String,
-      enum: ['Health', 'Wellness', 'Fitness', 'Nutrition'],  
-      required: true
-    },
-    imageUrl: { type: String },
-    tags: [String],
-    status: { type: String, enum: ['published', 'draft'], required: true },
-    publishedDate: { type: Date, default: Date.now }
-  });
+const { Schema } = mongoose;
+const ArticleSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  link: {
+    type: String,
+    required: true
+  },
+  comment: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment"
+    }
+  ]
+});
+const Article = mongoose.model("Article", ArticleSchema);
 
-const Article = mongoose.model('Article', articleSchema);
-
-export default Article;
+export default Article; 
