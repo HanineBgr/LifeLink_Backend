@@ -1,15 +1,26 @@
-import mongoose from "mongoose";
-import User from "./user.js";
-const { Schema , model } = mongoose;
+import mongoose from 'mongoose';
 
-const patientSchema = new mongoose.Schema({
-   Gender : {type: String , required : true},
-   // diabeteType : { type:String },
-   // GlucTargets : { type:String },
-   dateOfBirth : {type:Date , required : true},
-   Providers : [{type : mongoose.Schema.Types.ObjectId , ref: 'Provider'}]
-});
+const patientSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    phone: { type: String, required: true },
+    address: { type: String, required: true },
+    dateOfBirth: { type: Date, required: true },
+    gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true },
+    medicalHistory: { type: String, default: '' },
+    doctorAssigned: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' },
+    appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Appointment' }],
+    emergencyContact: {
+      name: { type: String, required: true },
+      phone: { type: String, required: true },
+      relation: { type: String, required: true }
+    }
+  },
+  { timestamps: true }
+);
 
-const Patient = User.discriminator('Patient',patientSchema);
+const Patient = mongoose.model('Patient', patientSchema);
 
 export default Patient;
