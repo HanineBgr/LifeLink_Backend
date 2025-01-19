@@ -75,6 +75,17 @@ export const doctorSignIn = async (req, res) => {
     }
 };
 
+// Sign Out 
+export const doctorSignOut = async (req, res) => {
+    try {
+      res.clearCookie("token"); 
+      res.status(200).json({ message: "Doctor signed out successfully" });
+    } catch (error) {
+      console.error("Error signing out doctor", error);
+      res.status(500).json({ message: "Error signing out doctor", error: error.message });
+    }
+  };
+  
 // Get Doctor by ID 
 export const getDoctorById = async (req, res) => {
     const doctorId = req.params.id;

@@ -91,6 +91,17 @@ export const getPatientProfile = async (req, res, next) => {
   }
 };
 
+// Sign Out 
+export const patientSignOut = async (req, res) => {
+  try {
+    res.clearCookie("token"); 
+    res.status(200).json({ message: "Patient signed out successfully" });
+  } catch (error) {
+    console.error("Error signing out patient", error);
+    res.status(500).json({ message: "Error signing out patient", error: error.message });
+  }
+};
+
 // Update Patient Profile
 export const updatePatientProfile = async (req, res, next) => {
   const { id } = req.params;

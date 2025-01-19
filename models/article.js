@@ -6,7 +6,7 @@ const articleSchema = new mongoose.Schema({
     author: { type: String, required: true },
     category: {
       type: String,
-      enum: ['Health', 'Wellness', 'Fitness', 'Nutrition'],  // Enum values
+      enum: ['Health', 'Wellness', 'Fitness', 'Nutrition'],  
       required: true
     },
     imageUrl: { type: String },
@@ -14,7 +14,6 @@ const articleSchema = new mongoose.Schema({
     status: { type: String, enum: ['published', 'draft'], required: true },
     publishedDate: { type: Date, default: Date.now }
   });
-  
 
 const Article = mongoose.model('Article', articleSchema);
 
