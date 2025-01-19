@@ -123,7 +123,7 @@ export const getAllDoctors = async (req, res) => {
 // Update 
 export const updateDoctorProfile = async (req, res) => {
     const { name, bio, clinicHours, specialization, address, diplomaVerification } = req.body;
-    const doctorId = req.params.id;  // Assuming the doctor is identified by their ID
+    const doctorId = req.params.id;  
 
     try {
         const doctor = await Doctor.findById(doctorId);
