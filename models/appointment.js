@@ -6,7 +6,7 @@ const AppointmentSchema = new Schema(
   {
     patient: {
       type: Schema.Types.ObjectId,
-      ref: 'Patient', // Assuming you have a 'Patient' model
+      ref: 'Patient', 
       required: true,
     },
     doctor: {

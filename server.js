@@ -7,7 +7,6 @@ import articleRoutes from './routes/article.js';
 import appointmentRoutes from './routes/appointment.js'; 
 
 dotenv.config();
-
 const app = express();
 
 app.use(express.json());

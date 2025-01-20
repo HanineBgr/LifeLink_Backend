@@ -19,7 +19,6 @@ const scrapeArticles = async () => {
         articles.push({ title, link: `https://www.medicalnewstoday.com${link}` });
       }
     });
-
     for (const article of articles) {
       const existingArticle = await Article.findOne({ title: article.title });
       if (!existingArticle) {
