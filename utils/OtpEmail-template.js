@@ -1,5 +1,3 @@
-
-
 export const OtpEmailOptions = (sender,reciever,otp) => {
     return {
         from: sender,

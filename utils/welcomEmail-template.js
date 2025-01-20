@@ -1,5 +1,3 @@
-
-
 export const WelcomeEmailOptions = (sender,reciever) => {
     return {
         from: sender,
