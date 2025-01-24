@@ -7,13 +7,6 @@ designed for remote health monitoring and communication between patients and hea
 
 LifeLink Backend is the backbone of the **LifeLink** app, offering powerful APIs and services that facilitate secure and seamless communication between users (patients, doctors, and healthcare providers). The app enhances access to healthcare services through mobile technologies.
 
-The **LifeLink Backend** enables:
-- User authentication and role management
-- Managing medical data securely
-- Communication between patients and doctors via messages or updates
-- Scheduling appointments and reminders
-- Integration with third-party services like health data APIs
-
 ## Technologies Used 🛠️
 
 - **Node.js** - Backend runtime environment
@@ -33,3 +26,8 @@ The **LifeLink Backend** enables:
 - **Email Notifications**: Automated email reminders for users
 - **API Integrations**: Support for third-party health services and APIs
 
+## Machine Learning Integration 🤖  
+- **Data Input**: Users input their symptoms through the mobile app
+- **Model Training**: The backend trains a machine learning model using symptom and disease data stored in CSV files. 
+- **Prediction** :  The model predicts possible diseases based on input symptoms and suggests potential treatment options. 
+- **Output**: The results are sent to the patient and relevant healthcare providers.
